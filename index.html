@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test</title>
+
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ffd6e8, #d6f0ff);
+    background-attachment: fixed;
+}
+
+
+.container {
+    max-width: 500px;
+    margin: auto;
+    padding: 15px;
+}
+
+
+h1 {
+    text-align: center;
+    color: #ff4d88;
+    font-size: 24px;
+}
+
+
+.progress-wrap {
+    background: #ffffffcc;
+    backdrop-filter: blur(8px);
+    border-radius: 15px;
+    padding: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+
+.progress-label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+
+.progress-track {
+    width: 100%;
+    height: 10px;
+    background: #f3dbe6;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+
+.progress-fill {
+    height: 100%;
+    width: 0;
+    background: #4caf50;
+    transition: width 0.25s ease;
+}
+
+
+.card {
+    background: #ffffffcc;
+    backdrop-filter: blur(8px);
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+
+.card h3 {
+    margin: 0 0 8px 0;
+    color: #333;
+    font-size: 18px;
+}
+
+
+.duration {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+
+ul {
+    padding-left: 18px;
+}
+
+
+li {
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+
+a {
+    color: #ff4d88;
+    text-decoration: none;
+}
+
+
+button {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background: #ff80ab;
+    color: white;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+
+button.completed {
+    background: #4caf50;
+}
+
+
+.small-btn {
+    width: auto;
+    margin-top: 8px;
+    margin-right: 8px;
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+
+.admin-actions {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+.muted {
+    font-size: 12px;
+    color: #666;
+    margin-top: 6px;
+}
+
+
+#statusMsg {
+    font-size: 13px;
+    color: #444;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+
+pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 12px;
+    margin: 0;
+}
+
+
+.loader-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+
+.cute-loader {
+    width: 36px;
+    height: 36px;
+    border: 4px solid #ffd3e3;
+    border-top-color: #ff6fa2;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+}
+
+
+.loader-text {
+    font-size: 14px;
+    color: #444;
+}
+
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99;
+    padding: 16px;
+}
+
+
+.modal {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+
+.modal h3 {
+    margin: 0 0 10px 0;
+}
+
+
+.modal input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+}
+
+
+.modal textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    min-height: 110px;
+    resize: vertical;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+}
+
+
+.modal label {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+
+.error-text {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-bottom: 8px;
+    min-height: 16px;
+}
+
+
+.modal-row {
+    display: flex;
+    gap: 8px;
+}
+
+
+.finish-modal {
+    text-align: center;
+}
+
+
+.finish-modal img {
+    width: 170px;
+    height: 170px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+
+<body>
+
+
+<div class="container">
+<h1>🌸 Modules 2 & 3 Study Plan 🌸</h1>
+<div id="statusMsg" class="loader-wrap">
+    <div class="cute-loader"></div>
+    <div class="loader-text">Loading your study plan... ✨</div>
+</div>
+<div class="progress-wrap">
+    <div class="progress-label" id="progressText">Progress: 0/0 completed</div>
+    <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+</div>
+<div class="card" id="adminPanel" style="display:none;">
+    <h3>Admin Controls</h3>
+    <button id="addTopicBtn">Add Topic</button>
+    <div class="muted">Admin mode is enabled because URL contains <b>?user=admin</b>.</div>
+</div>
+<div id="schedule"></div>
+</div>
+
+
+<div id="editModalOverlay" class="modal-overlay">
+    <div class="modal">
+        <h3>Edit Data</h3>
+        <label for="editIdInput">ID</label>
+        <input id="editIdInput" type="text" placeholder="Item ID" />
+        <label for="editTopicInput">Topic</label>
+        <input id="editTopicInput" type="text" placeholder="Topic name" />
+        <label for="editTargetDateInput">Target Date</label>
+        <input id="editTargetDateInput" type="date" />
+        <label for="editDoneInput">Done</label>
+        <input id="editDoneInput" type="checkbox" style="width:auto; margin-bottom:10px;" />
+        <label for="editResourcesInput">Resources (JSON array)</label>
+        <textarea id="editResourcesInput" placeholder='[{"name":"Resource name","link":"https://example.com"}]'></textarea>
+        <div id="editErrorMsg" class="error-text"></div>
+        <div class="modal-row">
+            <button id="cancelEditBtn" class="small-btn">Cancel</button>
+            <button id="saveEditBtn" class="small-btn">Save</button>
+        </div>
+    </div>
+</div>
+
+
+<div id="finishModalOverlay" class="modal-overlay">
+    <div class="modal finish-modal">
+        <h3>Yay! Task completed 🎉</h3>
+        <img id="finishGif" src="https://media.tenor.com/mZqsgmExP_0AAAAM/abster-abstract.gif" alt="Completion celebration" />
+        <div class="duration" style="margin-top:10px; margin-bottom:0; display: none;">
+            <a href="https://tenor.com/search/i-finished-gifs" target="_blank">See more “I finished” GIFs</a>
+        </div>
+        <br>
+        <button id="closeFinishBtn" class="small-btn">Close</button>
+    </div>
+</div>
+
+
+<script>
+const PANTRY_ID = "4ceda997-7bcc-4b66-b9b2-778bb7794ded";
+const BASKET_NAME = "study_plan_tracker";
+const API_URL = `https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/${BASKET_NAME}`;
+const isAdmin = new URLSearchParams(window.location.search).get("user") === "admin";
+
+const defaultTemplate = [
+{
+topic: "If, If-Else, Nested If, Else-If Ladder",
+resources: [
+{ name: "Jenny's Lectures – If Else in C", link: "https://www.youtube.com/@JennyslecturesCSIT" },
+{ name: "GeeksforGeeks – If Else in C", link: "https://www.geeksforgeeks.org/decision-making-c-cpp/" },
+{ name: "Practice Problems – HackerRank C", link: "https://www.hackerrank.com/domains/c" }
+]
+},
+{
+topic: "Switch Statement",
+resources: [
+{ name: "CodeWithHarry – Switch in C", link: "https://www.youtube.com/@CodeWithHarry" },
+{ name: "GeeksforGeeks – Switch Statement", link: "https://www.geeksforgeeks.org/switch-statement-cc/" },
+{ name: "Practice – Write Calculator Program", link: "https://www.programiz.com/c-programming/examples/calculator-switch-case" }
+]
+},
+{
+topic: "For Loop, While Loop",
+resources: [
+{ name: "Neso Academy – Loops in C", link: "https://www.youtube.com/@nesoacademy" },
+{ name: "GeeksforGeeks – C Loops", link: "https://www.geeksforgeeks.org/loops-in-c-and-cpp/" },
+{ name: "HackerRank Loop Problems", link: "https://www.hackerrank.com/domains/c" }
+]
+},
+{
+topic: "Do While, Break, Continue, Goto",
+resources: [
+{ name: "GeeksforGeeks – Loop Control Statements", link: "https://www.geeksforgeeks.org/loop-control-statements-in-c/" },
+{ name: "Programiz – Do While Loop", link: "https://www.programiz.com/c-programming/c-do-while-loops" },
+{ name: "Practice Problems – CodeChef", link: "https://www.codechef.com/practice" }
+]
+},
+{
+topic: "Functions & Function Prototype",
+resources: [
+{ name: "Jenny's Lectures – Functions in C", link: "https://www.youtube.com/@JennyslecturesCSIT" },
+{ name: "GeeksforGeeks – Functions in C", link: "https://www.geeksforgeeks.org/functions-in-c/" },
+{ name: "Let Us C (Book Reference)", link: "https://www.amazon.in/Let-Us-C-Yashavant-Kanetkar/dp/8183331637" }
+]
+},
+{
+topic: "Call by Value & Call by Reference",
+resources: [
+{ name: "GeeksforGeeks – Call by Value vs Reference", link: "https://www.geeksforgeeks.org/call-by-value-and-call-by-reference-in-c/" },
+{ name: "Programiz – C Functions", link: "https://www.programiz.com/c-programming/c-functions" },
+{ name: "Practice – CodeChef", link: "https://www.codechef.com/practice" }
+]
+},
+{
+topic: "Recursion",
+resources: [
+{ name: "Neso Academy – Recursion", link: "https://www.youtube.com/@nesoacademy" },
+{ name: "GeeksforGeeks – Recursion in C", link: "https://www.geeksforgeeks.org/recursion/" },
+{ name: "HackerRank Recursion Problems", link: "https://www.hackerrank.com/domains/c" }
+]
+},
+{
+topic: "Storage Classes (auto, extern, static, register)",
+resources: [
+{ name: "GeeksforGeeks – Storage Classes in C", link: "https://www.geeksforgeeks.org/storage-classes-in-c/" },
+{ name: "Programiz – Storage Class", link: "https://www.programiz.com/c-programming/c-storage-class" },
+{ name: "Let Us C – Storage Classes", link: "https://www.amazon.in/Let-Us-C-Yashavant-Kanetkar/dp/8183331637" }
+]
+}
+];
+
+
+const scheduleDiv = document.getElementById("schedule");
+const progressText = document.getElementById("progressText");
+const progressFill = document.getElementById("progressFill");
+const statusMsg = document.getElementById("statusMsg");
+const adminPanel = document.getElementById("adminPanel");
+const addTopicBtn = document.getElementById("addTopicBtn");
+const finishModalOverlay = document.getElementById("finishModalOverlay");
+const finishGif = document.getElementById("finishGif");
+const closeFinishBtn = document.getElementById("closeFinishBtn");
+const editModalOverlay = document.getElementById("editModalOverlay");
+const editIdInput = document.getElementById("editIdInput");
+const editTopicInput = document.getElementById("editTopicInput");
+const editTargetDateInput = document.getElementById("editTargetDateInput");
+const editDoneInput = document.getElementById("editDoneInput");
+const editResourcesInput = document.getElementById("editResourcesInput");
+const editErrorMsg = document.getElementById("editErrorMsg");
+const cancelEditBtn = document.getElementById("cancelEditBtn");
+const saveEditBtn = document.getElementById("saveEditBtn");
+
+let studyPlan = [];
+let initialData = null;
+let editingItemId = null;
+let pendingBusyOps = 0;
+
+const completionGifs = [
+    "https://media.tenor.com/mZqsgmExP_0AAAAM/abster-abstract.gif",
+    "https://media.tenor.com/9KFCFh-RV2EAAAAM/done-finished.gif",
+    "https://i.pinimg.com/originals/7f/31/f7/7f31f7fc4207b8baceb1fdb5dfe3aafe.gif",
+    "https://media.tenor.com/u2yZwa_rI10AAAAM/sponge-bob-square-pants-animation.gif"
+];
+
+const completionGifWeights = [4, 4, 1, 1];
+
+
+function toISODate(dateObj) {
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
+
+
+function showBusy(message = "Updating...") {
+    pendingBusyOps += 1;
+    statusMsg.style.display = "flex";
+    statusMsg.innerHTML = `
+        <div class="cute-loader"></div>
+        <div class="loader-text">${message}</div>
+    `;
+}
+
+
+function hideBusy() {
+    pendingBusyOps = Math.max(0, pendingBusyOps - 1);
+    if (pendingBusyOps === 0) {
+        statusMsg.style.display = "none";
+    }
+}
+
+
+function formatDate(iso) {
+    const dt = new Date(`${iso}T00:00:00`);
+    return dt.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    });
+}
+
+
+function buildDefaultPlan() {
+    const startDate = new Date(2026, 2, 3);
+    return defaultTemplate.map((item, index) => {
+        const target = new Date(startDate);
+        target.setDate(startDate.getDate() + index);
+        return {
+            id: `day-${index + 1}`,
+            topic: item.topic,
+            resources: item.resources,
+            done: false,
+            targetDate: toISODate(target)
+        };
+    });
+}
+
+
+function normalizePlan(items) {
+    if (!Array.isArray(items)) return [];
+    return items.map((item, index) => {
+        const fallback = buildDefaultPlan()[index] || buildDefaultPlan()[0];
+        return {
+            id: item.id || `day-${index + 1}`,
+            topic: item.topic || fallback.topic,
+            resources: Array.isArray(item.resources) ? item.resources : fallback.resources,
+            done: Boolean(item.done),
+            targetDate: item.targetDate || fallback.targetDate
+        };
+    });
+}
+
+
+function getNextTargetDate() {
+    if (!studyPlan.length) return "2026-03-03";
+    const last = studyPlan[studyPlan.length - 1].targetDate;
+    const next = new Date(`${last}T00:00:00`);
+    next.setDate(next.getDate() + 1);
+    return toISODate(next);
+}
+
+
+async function saveToPantry(message = "Saving changes...") {
+    const payload = {
+        items: studyPlan,
+        updatedAt: new Date().toISOString()
+    };
+
+    showBusy(message);
+    try {
+        await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+    } catch (error) {
+        statusMsg.style.display = "flex";
+        statusMsg.innerHTML = `<div class="loader-text">Could not save to Pantry.</div>`;
+    } finally {
+        hideBusy();
+    }
+}
+
+
+async function loadFromPantry() {
+    showBusy("Loading your study plan... ✨");
+    try {
+        const response = await fetch(API_URL, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Basket not found");
+        }
+
+        const data = await response.json();
+        initialData = data;
+
+        if (Array.isArray(data.items) && data.items.length) {
+            studyPlan = normalizePlan(data.items);
+        } else {
+            studyPlan = buildDefaultPlan();
+            await saveToPantry();
+        }
+    } catch (error) {
+        initialData = { note: "No initial remote basket data found." };
+        studyPlan = buildDefaultPlan();
+        await saveToPantry();
+    } finally {
+        hideBusy();
+    }
+}
+
+
+function updateProgress() {
+    const total = studyPlan.length;
+    const completed = studyPlan.filter(item => item.done).length;
+    const percent = total ? (completed / total) * 100 : 0;
+
+    progressText.textContent = `Progress: ${completed}/${total} completed`;
+    progressFill.style.width = `${percent}%`;
+}
+
+
+function makeResourcesList(resources) {
+    return resources.map(res => `<li><a href="${res.link}" target="_blank">${res.name}</a></li>`).join("");
+}
+
+
+function pickWeightedGif() {
+    const totalWeight = completionGifWeights.reduce((sum, weight) => sum + weight, 0);
+    let roll = Math.random() * totalWeight;
+
+    for (let index = 0; index < completionGifs.length; index += 1) {
+        roll -= completionGifWeights[index] || 0;
+        if (roll < 0) {
+            return completionGifs[index];
+        }
+    }
+
+    return completionGifs[0];
+}
+
+
+function showFinishPopup() {
+    finishGif.src = pickWeightedGif();
+    finishModalOverlay.style.display = "flex";
+}
+
+
+function closeFinishPopup() {
+    finishModalOverlay.style.display = "none";
+}
+
+
+function openEditDialog(item) {
+    editingItemId = item.id;
+    editIdInput.value = item.id;
+    editTopicInput.value = item.topic;
+    editTargetDateInput.value = item.targetDate;
+    editDoneInput.checked = item.done;
+    editResourcesInput.value = JSON.stringify(item.resources, null, 2);
+    editErrorMsg.textContent = "";
+    editModalOverlay.style.display = "flex";
+    editTopicInput.focus();
+}
+
+
+function closeEditDialog() {
+    editingItemId = null;
+    editErrorMsg.textContent = "";
+    editModalOverlay.style.display = "none";
+}
+
+
+function renderSchedule() {
+    scheduleDiv.innerHTML = "";
+
+    studyPlan.forEach((item, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+            <h3>Day ${index + 1}: ${item.topic}</h3>
+            <div class="duration">🎯 Target Date: ${formatDate(item.targetDate)}</div>
+            <div class="duration">⏰ Max Study Time: 1 Hour</div>
+            <ul>${makeResourcesList(item.resources)}</ul>
+            <button class="${item.done ? "completed" : ""}" data-id="${item.id}">${item.done ? "Mark as Undone ↩️" : "Mark as Done 💖"}</button>
+        `;
+
+        const doneBtn = card.querySelector("button");
+        doneBtn.addEventListener("click", async () => {
+            const wasDone = item.done;
+            item.done = !item.done;
+            renderSchedule();
+            updateProgress();
+            await saveToPantry(item.done ? "Marking as done..." : "Marking as undone...");
+            if (!wasDone && item.done) {
+                showFinishPopup();
+            }
+        });
+
+        if (isAdmin) {
+            const actions = document.createElement("div");
+            actions.className = "admin-actions";
+            actions.innerHTML = `
+                <button class="small-btn" data-action="edit">Edit</button>
+                <button class="small-btn" data-action="delete">Delete</button>
+                <button class="small-btn" data-action="toggle">${item.done ? "Mark Undone" : "Mark Done"}</button>
+            `;
+
+            const [editBtn, deleteBtn, toggleBtn] = actions.querySelectorAll("button");
+
+            editBtn.addEventListener("click", async () => {
+                openEditDialog(item);
+            });
+
+            deleteBtn.addEventListener("click", async () => {
+                studyPlan = studyPlan.filter(x => x.id !== item.id);
+                renderSchedule();
+                updateProgress();
+                await saveToPantry("Deleting topic...");
+            });
+
+            toggleBtn.addEventListener("click", async () => {
+                const wasDone = item.done;
+                item.done = !item.done;
+                renderSchedule();
+                updateProgress();
+                await saveToPantry(item.done ? "Marking as done..." : "Marking as undone...");
+                if (!wasDone && item.done) {
+                    showFinishPopup();
+                }
+            });
+
+            card.appendChild(actions);
+        }
+
+        scheduleDiv.appendChild(card);
+    });
+
+    updateProgress();
+}
+
+
+async function createTopic() {
+    const topic = prompt("New topic name:");
+    if (!topic) return;
+
+    const resourceName = prompt("Resource name:", "Reference");
+    const resourceLink = prompt("Resource link:", "https://www.geeksforgeeks.org/");
+
+    studyPlan.push({
+        id: `custom-${Date.now()}`,
+        topic: topic.trim(),
+        resources: [{
+            name: resourceName || "Reference",
+            link: resourceLink || "https://www.geeksforgeeks.org/"
+        }],
+        done: false,
+        targetDate: getNextTargetDate()
+    });
+
+    renderSchedule();
+    await saveToPantry("Adding topic...");
+}
+
+
+async function init() {
+    if (isAdmin) {
+        adminPanel.style.display = "block";
+        addTopicBtn.addEventListener("click", createTopic);
+    }
+
+    await loadFromPantry();
+    renderSchedule();
+}
+
+
+cancelEditBtn.addEventListener("click", closeEditDialog);
+
+saveEditBtn.addEventListener("click", async () => {
+    const nextId = editIdInput.value.trim();
+    const nextTopic = editTopicInput.value.trim();
+    const nextTargetDate = editTargetDateInput.value;
+    const nextDone = editDoneInput.checked;
+    const resourcesText = editResourcesInput.value.trim();
+
+    if (!editingItemId) {
+        closeEditDialog();
+        return;
+    }
+
+    if (!nextId || !nextTopic || !nextTargetDate || !resourcesText) {
+        editErrorMsg.textContent = "Please fill all fields.";
+        return;
+    }
+
+    let nextResources;
+    try {
+        nextResources = JSON.parse(resourcesText);
+    } catch (error) {
+        editErrorMsg.textContent = "Resources must be valid JSON.";
+        return;
+    }
+
+    if (!Array.isArray(nextResources)) {
+        editErrorMsg.textContent = "Resources JSON must be an array.";
+        return;
+    }
+
+    const invalidResource = nextResources.some(res => !res || typeof res.name !== "string" || typeof res.link !== "string");
+    if (invalidResource) {
+        editErrorMsg.textContent = "Each resource must have string fields: name, link.";
+        return;
+    }
+
+    const item = studyPlan.find(x => x.id === editingItemId);
+    const duplicateId = studyPlan.some(x => x.id === nextId && x.id !== editingItemId);
+    if (duplicateId) {
+        editErrorMsg.textContent = "ID already exists. Use a unique ID.";
+        return;
+    }
+
+    if (item) {
+        item.id = nextId;
+        item.topic = nextTopic;
+        item.targetDate = nextTargetDate;
+        item.done = nextDone;
+        item.resources = nextResources;
+        renderSchedule();
+        updateProgress();
+        await saveToPantry("Saving edit...");
+    }
+
+    closeEditDialog();
+});
+
+editModalOverlay.addEventListener("click", (event) => {
+    if (event.target === editModalOverlay) {
+        closeEditDialog();
+    }
+});
+
+closeFinishBtn.addEventListener("click", closeFinishPopup);
+
+finishModalOverlay.addEventListener("click", (event) => {
+    if (event.target === finishModalOverlay) {
+        closeFinishPopup();
+    }
+});
+
+
+init();
+</script>
+
+
+</body>
+</html>
